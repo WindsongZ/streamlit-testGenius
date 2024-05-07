@@ -1,6 +1,6 @@
-# Welcome to Streamlit!
+# Welcome to testGeinus!
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire. :heart:
+I excel at transforming uploaded images and texts into precise, multilingual test cases, streamlining the work of Business Analysts with efficiency and accuracy.:heart:
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
+If you have any questions on Streamlit, checkout our [documentation](https://docs.streamlit.io) and [community
 forums](https://discuss.streamlit.io).
