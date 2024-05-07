@@ -19,8 +19,8 @@ dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")  # get api key from environme
 st.set_page_config(layout="wide", page_title='TestGenius')
 
 default_title = 'New Chat'
-default_messages = [('user', 'Hello'),
-                    ('assistant', 'Hello, how can I help you?')
+default_messages = [('user', 'What capabilities do you offer?'),
+                    ('assistant', 'I excel at transforming uploaded images and texts into precise, multilingual test cases, streamlining the work of Business Analysts with efficiency and accuracy.')
                     ]
 
 conversations = [{
@@ -101,7 +101,7 @@ def respond_nonStream(prompt, instruction):
     messages = [
         {'role': 'system', 'content': instruction},
         {'role': 'user', 'content': prompt}]
-    response = Generation.call(model="qwen-turbo",
+    response = Generation.call(model="qwen-max",
                                messages=messages,
                                result_format='message',  # 设置输出为'message'格式
                                temperature=1,
@@ -176,7 +176,7 @@ if prompt:
                 您输入了中文的功能描述。
                 | 用例编号 | 测试步骤                                               | 预期结果         |
                 | -------- | ------------------------------------------------------ | ---------------- |
-                | 1        | 1. 输入正确的用户名和密码<br>2. 点击登录按钮          | 系统跳转到首页   |
+                | 1        | 1. 输入正确的用户名和密码 2. 点击登录按钮          | 系统跳转到首页   |
                 
                 # 示例2
                 user: Clicking the registration button submits the data.
