@@ -104,7 +104,9 @@ def respond_nonStream(prompt, instruction):
     response = Generation.call(model="qwen-turbo",
                                messages=messages,
                                result_format='message',  # 设置输出为'message'格式
-                               )
+                               temperature=1,
+                               top_p=0.8,
+                               top_k=50)
     if response.status_code == HTTPStatus.OK:
         return response.output.choices[0]['message']['content']
     else:
