@@ -4,8 +4,8 @@ from dashscope import Generation
 import dashscope
 import gradio as gr
 
-# dashscope.api_key = 'sk-73e9b0452a7e40048495d8ac8ab1afe4'  # Vincent's API key
-dashscope.api_key = 'sk-83b8ed0ead0849ae9e63a2ae5bdbde0d'  # Rayman's API key
+# dashscope.api_key =   # Vincent's API key
+dashscope.api_key =   # Rayman's API key
 
 
 def respond_nonStream(prompt, chat_history, instruction, model):
