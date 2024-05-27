@@ -5,7 +5,7 @@ from http import HTTPStatus
 import dashscope
 from dashscope import Generation
 
-dashscope.api_key = 'sk-83b8ed0ead0849ae9e63a2ae5bdbde0d'  # Rayman's API key
+dashscope.api_key = 'sk-73e9b0452a7e40048495d8ac8ab1afe4'  # Vincent's API key
 
 with gr.Blocks() as demo:
     history = [["Hello","Hello, how can I help you?"]]
