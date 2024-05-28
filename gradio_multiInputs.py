@@ -4,7 +4,7 @@ import dashscope
 from dashscope import Generation
 
 
-dashscope.api_key = 'sk-73e9b0452a7e40048495d8ac8ab1afe4'  # Vincent's API key
+dashscope.api_key =   # Vincent's API key
 
 
 def pross_instruction(system, rag_dict):
