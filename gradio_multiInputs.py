@@ -7,6 +7,13 @@ from dashscope import Generation
 dashscope.api_key = 'sk-73e9b0452a7e40048495d8ac8ab1afe4'  # Vincent's API key
 
 
+def pross_instruction(system, rag_dict):
+    """
+        使用format_map()替换字符串中的变量。
+    """
+    return system.format_map(rag_dict)
+
+
 def response(prompt, instruction):
     messages = [{'role': 'system', 'content': instruction},
                 {'role': 'user', 'content': prompt}]
