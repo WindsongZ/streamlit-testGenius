@@ -5,20 +5,16 @@ import csv
 from http import HTTPStatus
 import dashscope
 from dashscope import Generation
+import os
+
+dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")  # Vincent's API key
 
 
-
-
-def pross_instruction(system, rag_dict):
-    """
-        使用format_map()替换字符串中的变量。
-    """
-    return system.format_map(rag_dict)
-
-
-def response(prompt, instruction):
-    messages = [{'role': 'system', 'content': instruction},
-                {'role': 'user', 'content': prompt}]
+# todo: delete instruction part or make it optional
+def response(prompt, instruction=None):
+    messages = [{'role': 'user', 'content': prompt}]
+    if instruction is not None:  # 如果提供了指令，则添加到messages中
+        messages.insert(0, {'role': 'system', 'content': instruction})
 
     response = Generation.call(model='qwen-plus',
                                messages=messages,
@@ -41,13 +37,14 @@ def response(prompt, instruction):
         return f"Error: Could not generate response with Status code: {response.status_code}, error code: {response.code}"
 
 
-def format_full_prompt(df):
+def format_full_prompt(df, introduction):
     # 为每个 row 创建 context
     df['context'] = df.apply(lambda row: f"{row['RAG1']}-{row['RAG2']}", axis=1)
 
     # 准备用于 format 的字典
     format_dict = df[['business_use_mark', 'context', 'question']].apply(lambda x: dict(zip(x.index, x)), axis=1)
-
+    if len(introduction) >= 100:
+        df['full_prompt'] = introduction
     # 使用 apply() 和 lambda 函数格式化 full_prompt 列
     df['full_prompt'] = df.apply(lambda row: row['full_prompt'].format(**format_dict[row.name]), axis=1)
 
@@ -56,14 +53,13 @@ def format_full_prompt(df):
     return df
 
 
-def process_xlsx(xlsx_file, instruction):
+def process_xlsx(xlsx_file, instruction=None):  # 这里也使instruction参数变成可选
     # 读取xlsx文件到pandas DataFrame
     df = pd.read_excel(xlsx_file)
-
     # 格式化prompts
-    formatted_df = format_full_prompt(df)
-
+    formatted_df = format_full_prompt(df, instruction)
     # 假设我们要处理的提示是DataFrame的'full_prompt'列
+    # 调用response时，根据instruction是否为None自动处理
     formatted_df['Response'] = formatted_df['full_prompt'].apply(lambda prompt: response(prompt, instruction))
 
     # 使用tempfile创建一个临时文件路径保存处理后的xlsx
@@ -79,7 +75,7 @@ def main():
         with gr.Accordion("输入说明"):
             gr.Markdown("请上传一个xlsx文件，文件应包含prompts。")
             system_instruction = gr.Textbox(label="System Instruction", lines=2,
-                                            value="A conversation between a user and an LLM-based AI assistant. The assistant gives helpful and honest answers.")
+                                            value=" ")
 
         file_input = gr.File(label="上传xlsx文件")
         submit_button = gr.Button("处理xlsx")
