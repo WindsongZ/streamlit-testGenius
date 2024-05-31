@@ -6,7 +6,7 @@ from http import HTTPStatus
 import dashscope
 from dashscope import Generation
 import os
-
+from testAny import check_df_english, check_df_tags
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")  # Vincent's API key
 
 
@@ -84,6 +84,8 @@ def main():
         output_file = gr.File(label="下载处理后的文件")
         clear_data = gr.ClearButton(components=[output_table, output_file], value="Clear processed data")
         clear_all = gr.ClearButton(components=[file_input, output_table, output_file], value="Clear console")
+        check_tags_button = gr.Button("检查xlsx文件-tags")
+        check_english_button = gr.Button("检查xlsx文件-英文")
         def update_output(xlsx_file, instruction):
             if xlsx_file is not None:
                 formatted_df, tmp_path = process_xlsx(xlsx_file, instruction)
@@ -91,6 +93,7 @@ def main():
 
         submit_button.click(fn=update_output, inputs=[file_input, system_instruction],
                             outputs=[output_table, output_file])
+        check_tags_button.click(fn=check_df_tags, inputs=[output_table], outputs=[output_table])
 
     demo.launch()
 
