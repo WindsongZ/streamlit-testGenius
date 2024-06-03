@@ -50,7 +50,7 @@ def classify_tags(xml_string):
     return complete_tags_str, incomplete_tags_str
 
 
-def check_df_tags(defaultDf=pd.DataFrame(data)):
+def check_df_tags(df=pd.DataFrame(data)):
 
     # 应用函数到DataFrame
     df['CompleteTags'], df['IncompleteTags'] = zip(*df['Response'].apply(classify_tags))
@@ -76,14 +76,14 @@ def extract_english_chars(response):
     return english_chars_str
 
 
-def check_df_english(defaultDf=pd.DataFrame(data)):
+def check_df_english(df=pd.DataFrame(data)):
     # 应用函数到DataFrame
     df['EnglishChars'] = df['Response'].apply(extract_english_chars)
 
     return df
 
 if __name__ == '__main__':
-    df = pd.read_excel('tmpc_l9sci0.xlsx')
+    df = pd.read_excel('tmp_s7rmnc4.xlsx')
     checked_df = check_df_tags(df)
     checked_df = check_df_english(checked_df)
     # 保存结果到Excel文件
