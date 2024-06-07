@@ -1,16 +1,17 @@
 import gradio as gr
 import pandas as pd
 import tempfile
-import csv
 from http import HTTPStatus
 import dashscope
 from dashscope import Generation
 import os
 from testAny import check_df_english, check_df_tags
+
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")  # Vincent's API key
 
 
 # todo: delete instruction part or make it optional
+# todo: add a checkbox to choose whether to use instruction or not
 def response(prompt, instruction=None):
     messages = [{'role': 'user', 'content': prompt}]
     if instruction is not None:  # 如果提供了指令，则添加到messages中
@@ -38,12 +39,13 @@ def response(prompt, instruction=None):
 
 
 def format_full_prompt(df, introduction):
-    # 为每个 row 创建 context
+    # 为每个 row 创建 context，拼接RAG1和2
     df['context'] = df.apply(lambda row: f"{row['RAG1']}-{row['RAG2']}", axis=1)
 
     # 准备用于 format 的字典
-    format_dict = df[['business_use_mark', 'context', 'question']].apply(lambda x: dict(zip(x.index, x)), axis=1)
-    if len(introduction) >= 100:
+    column_list = df.drop('full_prompt', axis=1).columns.tolist()  # 去除full_prompt列，其他的都为参数
+    format_dict = df[column_list].apply(lambda x: dict(zip(x.index, x)), axis=1)
+    if len(introduction) >= 200:
         df['full_prompt'] = introduction
     # 使用 apply() 和 lambda 函数格式化 full_prompt 列
     df['full_prompt'] = df.apply(lambda row: row['full_prompt'].format(**format_dict[row.name]), axis=1)
