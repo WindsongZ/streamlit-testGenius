@@ -83,7 +83,7 @@ def check_df_english(df=pd.DataFrame(data)):
     return df
 
 if __name__ == '__main__':
-    df = pd.read_excel('tmp_s7rmnc4.xlsx')
+    df = pd.read_excel('prompt_multiple_template0603_2_4steps_100tests.xlsx')
     checked_df = check_df_tags(df)
     checked_df = check_df_english(checked_df)
     # 保存结果到Excel文件
